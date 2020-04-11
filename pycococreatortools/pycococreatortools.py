@@ -65,13 +65,11 @@ def create_image_info(image_id, file_name, image_size,
 
     image_info = {
             "id": image_id,
-            "file_name": file_name,
             "width": image_size[0],
             "height": image_size[1],
-            "date_captured": date_captured,
+            "file_name": file_name,
             "license": license_id,
-            "coco_url": coco_url,
-            "flickr_url": flickr_url
+            "date_captured": date_captured,
     }
 
     return image_info
@@ -104,12 +102,10 @@ def create_annotation_info(annotation_id, image_id, category_info, binary_mask,
         "id": annotation_id,
         "image_id": image_id,
         "category_id": category_info["id"],
-        "iscrowd": is_crowd,
+        "segmentation": segmentation,
         "area": area.tolist(),
         "bbox": bounding_box.tolist(),
-        "segmentation": segmentation,
-        "width": binary_mask.shape[1],
-        "height": binary_mask.shape[0],
+        "iscrowd": is_crowd,
     } 
 
     return annotation_info
