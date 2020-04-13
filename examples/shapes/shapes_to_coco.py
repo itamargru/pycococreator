@@ -10,8 +10,9 @@ import numpy as np
 from pycococreatortools import pycococreatortools
 
 ROOT_DIR = 'train'
-IMAGE_DIR = os.path.join(ROOT_DIR, "shapes_train2018")
-ANNOTATION_DIR = os.path.join(ROOT_DIR, "annotations")
+IMAGE_DIR = os.path.join(ROOT_DIR, "image_train")
+ANNOTATION_DIR = os.path.join(ROOT_DIR, "mask_train")
+FILE_NAME = 'train_synth.json'
 
 INFO = {
     "description": "Example Dataset",
@@ -33,18 +34,23 @@ LICENSES = [
 CATEGORIES = [
     {
         'id': 1,
-        'name': 'square',
-        'supercategory': 'shape',
+        'name': 'inf',
+        'supercategory': 'type',
     },
     {
         'id': 2,
-        'name': 'circle',
-        'supercategory': 'shape',
+        'name': 'neg',
+        'supercategory': 'type',
     },
     {
         'id': 3,
-        'name': 'triangle',
-        'supercategory': 'shape',
+        'name': 'pos',
+        'supercategory': 'type',
+    },
+    {
+        'id': 4,
+        'name': 'other',
+        'supercategory': 'type',
     },
 ]
 
@@ -71,10 +77,10 @@ def main():
 
     coco_output = {
         "info": INFO,
-        "licenses": LICENSES,
-        "categories": CATEGORIES,
         "images": [],
-        "annotations": []
+        "annotations": [],
+        "licenses": LICENSES,
+        "categories": CATEGORIES
     }
 
     image_id = 1
@@ -87,8 +93,7 @@ def main():
         # go through each image
         for image_filename in image_files:
             image = Image.open(image_filename)
-            image_info = pycococreatortools.create_image_info(
-                image_id, os.path.basename(image_filename), image.size)
+            image_info = pycococreatortools.create_image_info(image_id, os.path.basename(image_filename), image.size)
             coco_output["images"].append(image_info)
 
             # filter for associated png annotations
@@ -116,7 +121,7 @@ def main():
 
             image_id = image_id + 1
 
-    with open('{}/instances_shape_train2018.json'.format(ROOT_DIR), 'w') as output_json_file:
+    with open('{}/{}'.format(ROOT_DIR, FILE_NAME), 'w') as output_json_file:
         json.dump(coco_output, output_json_file)
 
 
